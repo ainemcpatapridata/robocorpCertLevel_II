@@ -16,7 +16,7 @@ Library    Dialogs
 
 *** Keywords ***
 Download Orders
-    Download    https://robotsparebinindustries.com/orders.csv    overwrite=True    target_file=${CURDIR}\\output\\
+    Download    https://robotsparebinindustries.com/orders.csv    overwrite=True    target_file=${CURDIR}${/}output${/}
 
 Open Page
     Open Available Browser    https://robotsparebinindustries.com/#/robot-order
@@ -24,9 +24,9 @@ Open Page
 Create Receipt
     [Arguments]    ${data}
     ${receipt}=    Get Element Attribute    id:receipt    outerHTML
-    Html To Pdf    ${receipt}    ${CURDIR}\\output\\receipts\\receipt_${data}[Order number].pdf
-    Capture Element Screenshot      id:robot-preview-image    ${CURDIR}\\output\\imgs\\img_${data}[Order number].png
-    Add Watermark Image To Pdf    ${CURDIR}\\output\\imgs\\img_${data}[Order number].png    ${CURDIR}\\output\\receipts\\receipt_${data}[Order number].pdf    ${CURDIR}\\output\\receipts\\receipt_${data}[Order number].pdf
+    Html To Pdf    ${receipt}    ${CURDIR}${/}output${/}receipts${/}receipt_${data}[Order number].pdf
+    Capture Element Screenshot      id:robot-preview-image    ${CURDIR}${/}output${/}imgs${/}img_${data}[Order number].png
+    Add Watermark Image To Pdf    ${CURDIR}${/}output${/}imgs${/}img_${data}[Order number].png    ${CURDIR}${/}output${/}receipts${/}receipt_${data}[Order number].pdf    ${CURDIR}${/}output${/}receipts${/}receipt_${data}[Order number].pdf
 
 
 Fill Form And Submit
@@ -52,7 +52,7 @@ Fill Form And Submit
 
 
 Fill Form With CSV
-    @{table}=  Read table from CSV    ${CURDIR}\\output\\orders.csv
+    @{table}=  Read table from CSV    ${CURDIR}${/}output${/}orders.csv
     FOR    ${data}    IN    @{table}
         Fill Form And Submit    ${data}
     END
@@ -64,9 +64,9 @@ Order robots from RobotSpareBin Industries Inc
     Download Orders
     Open Page
     Fill Form With CSV
-    Archive Folder With Zip    ${CURDIR}\\output\\receipts    ${CURDIR}\\output\\receipts.zip
+    Archive Folder With Zip    ${CURDIR}${/}output${/}receipts    ${CURDIR}${/}output${/}receipts.zip
     ${wantSecret}=    Get Value From User    Want to know a secret? (Enter YES)
-    IF    ${wantSecret} == YES
+    IF    "${wantSecret}" == "YES"
         ${secret}=    Get Secret    notASecret
         Log    My First Pets Name is ${secret}[firstPetsName]
     END
